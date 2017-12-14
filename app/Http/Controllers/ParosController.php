@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\CatalogoParo;
 use App\RegistroParo;
-use Yajra\Datatables\Datatables;
+use App\VistaParos;
+use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\MotivoParo;
 use DB;
+use Carbon\Carbon;
 
 class ParosController extends Controller
 {
@@ -20,6 +22,28 @@ class ParosController extends Controller
         return view('paros.index', compact ('paros','catalogo'));
     }
 
+    public function prueba()
+    {
+        $vistaparos = DB::table('PRD_VIEW_PAROS')
+        ->orderBy('HORA_INICIO', 'desc')
+        ->take(1000)
+        ->select('RECID', 'MAQUINA', 'EQUIPO', 'TURNO', 'FECHA_APERTURA','HORA_INICIO','HORA_FIN','PARO'
+        )->get();
+        
+         return Datatables::of($vistaparos)
+         ->editColumn('FECHA_APERTURA', function ($user) {
+            return $user->FECHA_APERTURA ? with(new Carbon($user->FECHA_APERTURA))->format('d/m/Y') : '';
+        })
+        ->editColumn('HORA_INICIO', function ($user) {
+            return $user->HORA_INICIO ? with(new Carbon($user->HORA_INICIO))->format('H:i:s') : '';
+        })
+        ->editColumn('HORA_FIN', function ($user) {
+            return $user->HORA_FIN ? with(new Carbon($user->HORA_FIN))->format('H:i:s') : '';
+        })
+         ->make(true);
+
+    }
+
 
     public function listado()
     {
@@ -27,18 +51,22 @@ class ParosController extends Controller
         ->join('PRD_CATALOGO_MOTIVOS_PARO','PRD_REGISTRO_PAROS.PRP_ID_PARO','=', 'PRD_CATALOGO_MOTIVOS_PARO.PCMP_ID_PARO')
         
         ->orderBy('PRP_HORA_INICIO', 'desc')
-        ->take(10)
+        ->take(100)
         ->select(
+        'PRP_RECID',
         'PRP_PEDIDO',
         'PRP_HORA_INICIO',
         'PRP_HORA_FIN',
         'PRP_OBSERVACIONES',
         'PRP_TIEMPO_PLC',
-        'PRP_RECID',
-        'PRD_CATALOGO_MOTIVOS_PARO.PCMP_ID_PARO')
+        'PRD_CATALOGO_MOTIVOS_PARO.PCMP_ID_PARO'
+        )
         ->get();
      
-        return datatables::of($registro)->make();
+        return DataTables::of($registro)
+
+        ->make(true);
+        
     }
 
     public function edit($id)
@@ -68,9 +96,8 @@ class ParosController extends Controller
     public function show($id)
     {
         // get the nerd
-        
-        $paro = RegistroParo::where('PRP_RECID', $id)->first();
-        return view('paros.show', compact ('paro'));
+        $paro = DB::table('PRD_VIEW_PAROS')->where('RECID', $id)->first();
+        return view('paros.prueba', compact ('paro'));
 
     }
   

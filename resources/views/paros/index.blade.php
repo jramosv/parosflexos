@@ -1,6 +1,10 @@
 @extends('layout.app')
 @section('contenido')
-
+@if (session('status'))
+    <div class="alert alert-info">
+        {{ session('status') }}
+    </div>
+@endif
 <div>
 <table class="table" class="pagination-danger">
 		<thead>

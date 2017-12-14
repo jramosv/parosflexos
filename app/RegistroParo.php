@@ -16,10 +16,13 @@ class RegistroParo extends Model
     'PRP_PEDIDO',
     'PRP_NO_PARTE',
     'PRP_REPETICION',
-    'PRP_HORA_INICIO',
-    'PRP_HORA_FIN',
     'PRP_USUARIO',
     'PRP_AFECTA',
+];
+protected $dates = [
+    
+    'PRP_HORA_INICIO',
+    'PRP_HORA_FIN',
 ];
     
     public function catalogo()

@@ -17,7 +17,6 @@
 
 	<!-- CSS Files -->
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-	<link href="{{asset('/css/app.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/material-kit.css')}}" rel="stylesheet"/>
     <link href="{{asset('/css/topbutton.css')}}" rel="stylesheet"/>
@@ -100,22 +99,26 @@
 
 
 	<!--   Core JS Files   -->
-	<script src="{{asset('/js/jquery.min.js')}}" type="text/javascript"></script>
-	<script src="{{asset('/js/bootstrap.min.js')}}" type="text/javascript"></script>
-	<script src="{{asset('/js/material.min.js')}}" ></script>
+	
+	 <script src="//code.jquery.com/jquery.js"></script>
+	<script src="/js/material.min.js" ></script>
+	 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 	<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-	<script src="{{asset('/js/nouislider.min.js')}}" type="text/javascript"></script>
+	<script src="/js/nouislider.min.js" type="text/javascript"></script>
 
 	<!--  Plugin for the Datepicker, full documentation here: http://www.eyecon.ro/bootstrap-datepicker/ -->
-	<script src="{{asset('/js/bootstrap-datepicker.js')}}" type="text/javascript"></script>
+	<script src="/js/bootstrap-datepicker.js" type="text/javascript"></script>
 
 	<!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
-	<script src="{{asset('/js/material-kit.js')}}" type="text/javascript"></script>
-    <script src="{{asset('/js/topbutton.js')}}" type="text/javascript"></script>
+	<script src="/js/material-kit.js" type="text/javascript"></script>
+    <script src="/js/topbutton.js" type="text/javascript"></script>
 	<!--   Datatables   -->
 	 <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-	@stack('scripts')
+	 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+	 <script src="//cdn.datatables.net/plug-ins/1.10.16/sorting/datetime-moment.js"></script>
+
+	 @stack('scripts')
     
 
 </html>
