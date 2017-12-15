@@ -12,10 +12,8 @@
 */
 
 Route::get('/paros', 'ParosController@index');
-Route::get('/paros/{id}', 'ParosController@show');
-Route::get('/paros_lista', 'ParosController@listado')->name('listado');
-Route::get('/paros/{id}/edit', 'ParosController@edit');
+Route::get('/paros/{id}', 'ParosController@edit');
 Route::put('/paros/{id}', 'ParosController@update');
-Route::get('/prueba', 'ParosController@prueba')->name('prueba');
+Route::get('/prueba', 'ParosController@getData')->name('datatable');
 
 

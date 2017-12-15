@@ -1,51 +1,96 @@
 @extends('layout.app')
 @section('contenido')
-@if (session('status'))
-    <div class="alert alert-info">
-        {{ session('status') }}
-    </div>
-@endif
-<div>
-<table class="table" class="pagination-danger">
+
+<table id="vistaparos" class="display" cellspacing="0" width="100%">
 		<thead>
 			<tr>
-				<th class="text-center">No.</th>
-				<th class="text-center">Pedido</th>
-				<th class="text-center">Fecha</th>
-				<th class="text-center">Hora de Inicio</th>
-				<th class="text-center">Hora Fin</th>
-				<th class="text-center">Observaciones</th>
-				<th class="text-center">Tiempo de PLC</th>
-				<th class="text-center">Motivo de Paro</th>
+				<th>No.</th>
+				<th>Maquina</th>
+				<th width="50px">Equipo</th>
+                <th>Turno</th>
+				<th>Fecha</th>
+                <th>Inicio</th>
+                <th>Tiempo en PLC</th>
+				<th>Motivo de Paro</th>
 				<th>Acciones</th>
 
 			</tr>
 		</thead>
-		<tbody>
-			@foreach($paros as $paro)
-				<tr>
-					<td width="20px">{{ $paro->PRP_RECID }}</td>
-					<td class="text-center">{{ $paro->PRP_PEDIDO }}</td>
-					<td class="text-center">{{ $date = date('Y-m-d', strtotime($paro->PRP_HORA_INICIO))}}</td>
-					<td class="text-center">{{ $date = date('H:i:s', strtotime($paro->PRP_HORA_INICIO))}}</td>
-					<td class="text-center">{{ $date = date('H:i:s', strtotime($paro->PRP_HORA_FIN))}}</td>
-					<td class="text-center">{{ $paro->PRP_OBSERVACIONES }}</td>
-					<td class="text-center">{{ number_format($paro->PRP_TIEMPO_PLC, 3, '.', ',') }}</td>
-					<td class="text-center">{{ $paro->catalogo->PCMP_DESCRIPCION_CORTA }}</td>
-					<td width="122px">
-					
-					<a href= "{{ url ('/paros/'.$paro->PRP_RECID.'/edit') }}" title="Editar" class="btn btn-warning btn-xs">
-						<i class="fa fa-pencil" aria-hidden="true"></i>
-					</a>
-					
-				</td>
-				</td>
-			</tr>
-	@endforeach
 
-		</tbody>
+         <tfoot>
+			<tr>
+				<th>No.</th>
+				<th>Maquina</th>
+				<th>Equipo</th>
+                <th>Turno</th>
+				<th>Fecha</th>
+                <th>Inicio</th>
+                <th>Tiempo en PLC</th>
+				<th>Motivo de Paro</th>
+				<th>Acciones</th>
+
+			</tr>
+		</tfoot>
 	</table>
-	</div>
-	{!! $paros->render() !!}
 
 	@endsection
+
+@push('scripts')
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#vistaparos').DataTable( {
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json'
+            },
+            ajax: '{!! route('datatable') !!}',
+                columns: [
+                        
+                            {data: 'RECID', name: 'RECID'},
+                            {data: 'MAQUINA', name: 'MAQUINA'},
+                            {data: 'EQUIPO', name: 'EQUIPO'},
+                            {data: 'TURNO', name: 'TURNO'},
+                            {data: 'FECHA_APERTURA', name: 'FECHA_APERTURA'},
+                            {data: 'HORA_INICIO', name:'HORA_INICIO'},
+                            {data: 'TIEMPO_PARO_PLC', name: 'TIEMPO_PARO_PLC' },
+                            {data: 'PARO', name: 'PARO'},
+                            {
+	            "data": null,
+	            "className": "enlace",
+	            "defaultContent": null,
+                "render": function(data,type,row,meta) {
+                    return '<a class="btn btn-warning btn-xs" href="/paros/' + row.RECID + '"><i class="fa fa-pencil" aria-hidden="true"></i></a> ';
+                },
+	        },
+                            
+               
+        ],
+            responsive: true,
+            initComplete: function () {
+                this.api().columns([1,4,7]).every( function () {
+                    var column = this;
+                    var select = $('<select><option value=""></option></select>')
+                        .appendTo( $(column.footer()).empty() )
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+
+                column.data().unique().sort().each( function ( d, j ) {
+                   select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+                } );
+            }
+        });
+    });
+</script>
+
+
+
+
+    @endpush

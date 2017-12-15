@@ -16,16 +16,13 @@ class ParosController extends Controller
 {
     public function index()
     {
-        $paros = RegistroParo::orderBy('PRP_HORA_INICIO','desc')->paginate(10);
-        $catalogo = CatalogoParo::all();
-        
-        return view('paros.index', compact ('paros','catalogo'));
+        return view('paros.index');
     }
 
-    public function prueba()
+    public function getData()
     {
         $vistaparos = DB::table('PRD_VIEW_PAROS')
-        ->orderBy('HORA_INICIO', 'desc')
+        ->orderBy('RECID', 'desc')
         ->take(5000)
         ->select('RECID', 'MAQUINA', 'EQUIPO', 'TURNO', 'FECHA_APERTURA','HORA_INICIO','TIEMPO_PARO_PLC','PARO'
         )->get();
@@ -37,35 +34,13 @@ class ParosController extends Controller
         ->editColumn('HORA_INICIO', function ($user) {
             return $user->HORA_INICIO ? with(new Carbon($user->HORA_INICIO))->format('H:i:s') : '';
         })
+         ->editColumn('TIEMPO_PARO_PLC', function ($data) {
+                return number_format($data->TIEMPO_PARO_PLC,2, ',', ' ');
+            })
          ->make(true);
 
     }
-
-
-    public function listado()
-    {
-        $registro = DB::table('PRD_REGISTRO_PAROS')
-        ->join('PRD_CATALOGO_MOTIVOS_PARO','PRD_REGISTRO_PAROS.PRP_ID_PARO','=', 'PRD_CATALOGO_MOTIVOS_PARO.PCMP_ID_PARO')
-        
-        ->orderBy('PRP_HORA_INICIO', 'desc')
-        ->take(100)
-        ->select(
-        'PRP_RECID',
-        'PRP_PEDIDO',
-        'PRP_HORA_INICIO',
-        'PRP_HORA_FIN',
-        'PRP_OBSERVACIONES',
-        'PRP_TIEMPO_PLC',
-        'PRD_CATALOGO_MOTIVOS_PARO.PCMP_ID_PARO'
-        )
-        ->get();
-     
-        return DataTables::of($registro)
-
-        ->make(true);
-        
-    }
-
+    
     public function edit($id)
 
     {
@@ -90,12 +65,5 @@ class ParosController extends Controller
         
     }
 
-    public function show($id)
-    {
-        // get the nerd
-        $paro = DB::table('PRD_VIEW_PAROS')->where('RECID', $id)->first();
-        return view('paros.prueba', compact ('paro'));
-
-    }
   
 }
