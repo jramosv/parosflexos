@@ -26,8 +26,8 @@ class ParosController extends Controller
     {
         $vistaparos = DB::table('PRD_VIEW_PAROS')
         ->orderBy('HORA_INICIO', 'desc')
-        ->take(1000)
-        ->select('RECID', 'MAQUINA', 'EQUIPO', 'TURNO', 'FECHA_APERTURA','HORA_INICIO','HORA_FIN','PARO'
+        ->take(5000)
+        ->select('RECID', 'MAQUINA', 'EQUIPO', 'TURNO', 'FECHA_APERTURA','HORA_INICIO','TIEMPO_PARO_PLC','PARO'
         )->get();
         
          return Datatables::of($vistaparos)
@@ -36,9 +36,6 @@ class ParosController extends Controller
         })
         ->editColumn('HORA_INICIO', function ($user) {
             return $user->HORA_INICIO ? with(new Carbon($user->HORA_INICIO))->format('H:i:s') : '';
-        })
-        ->editColumn('HORA_FIN', function ($user) {
-            return $user->HORA_FIN ? with(new Carbon($user->HORA_FIN))->format('H:i:s') : '';
         })
          ->make(true);
 
