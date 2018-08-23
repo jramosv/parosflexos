@@ -29,13 +29,8 @@
     	<div class="container">
         	<!-- Brand and toggle get grouped for better mobile display -->
         	<div class="navbar-header">
-        		<button src="img/carlogo.png" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example">
-            		<span class="sr-only">Toggle navigation</span>
-		            <span class="icon-bar"></span>
-		            <span class="icon-bar"></span>
-		            <span class="icon-bar"></span>
-        		</button>
-        		<img src="img/carlogo.png">
+        		
+        		<img src="/img/carlogo.png">
         	</div>
 
         	<div class="collapse navbar-collapse" id="navigation-example">

@@ -6,7 +6,7 @@
 			<tr>
 				<th>No.</th>
 				<th>Maquina</th>
-				<th width="50px">Equipo</th>
+				<th>Equipo</th>
                 <th>Turno</th>
 				<th>Fecha</th>
                 <th>Inicio</th>
@@ -59,7 +59,7 @@
 	            "className": "enlace",
 	            "defaultContent": null,
                 "render": function(data,type,row,meta) {
-                    return '<a class="btn btn-warning btn-xs" href="/paros/' + row.RECID + '"><i class="fa fa-pencil" aria-hidden="true"></i></a> ';
+                    return '<div class="btn-group"> <a class="btn btn-info btn-xs" title="Información" href="/paros/' + row.RECID + '/show"><i class="fa fa-info-circle" aria-hidden="true"></i></a><a class="btn btn-warning btn-xs" title="Editar" href="/paros/' + row.RECID + '"><i class="fa fa-pencil" aria-hidden="true"></i></a> </div>';
                 },
 	        },
                             
@@ -70,7 +70,7 @@
                 this.api().columns([1,4,7]).every( function () {
                     var column = this;
                     var select = $('<select><option value=""></option></select>')
-                        .appendTo( $(column.footer()).empty() )
+                        .appendTo( $(column.header()).empty() )
                         .on( 'change', function () {
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()

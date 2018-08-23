@@ -33,7 +33,7 @@
 		</div>
 		
 		<input type="submit" class="btn btn-primary" value="Actualizar">
-		<a href="{{ url('/paros')}}" class="btn btn-warning">Cancelar</a>
+		<a href="{{ url('/')}}" class="btn btn-warning">Cancelar</a>
 	</form>
 </div>
 @endsection

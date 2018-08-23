@@ -22,8 +22,8 @@ class ParosController extends Controller
     public function getData()
     {
         $vistaparos = DB::table('PRD_VIEW_PAROS')
-        ->orderBy('RECID', 'desc')
-        ->take(5000)
+        ->latest('RECID')
+        ->take(10000)
         ->select('RECID', 'MAQUINA', 'EQUIPO', 'TURNO', 'FECHA_APERTURA','HORA_INICIO','TIEMPO_PARO_PLC','PARO'
         )->get();
         
@@ -61,8 +61,15 @@ class ParosController extends Controller
                     'PRP_ID_PARO'
                 ]
             ));
-        return redirect('/paros')->with('status', 'El motivo se actualizo correctamente!');
+        return redirect('/')->with('status', 'El motivo se actualizo correctamente!');
         
+    }
+
+    public function show($id)
+    {
+        $paro = RegistroParo::where('PRP_RECID', $id)->first();
+        $catalogo = CatalogoParo::all();
+        return view('paros.show',compact('paro', 'catalogo'));
     }
 
   
